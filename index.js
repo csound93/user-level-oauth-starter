@@ -6,6 +6,7 @@ require('dotenv').config();
 
 const express = require('express');
 const cors = require('cors');
+const path = require('path');
 
 const database = require('./dbConfig');
 const logger = require('./winston');
@@ -22,6 +23,14 @@ app.use([
 ]);
 
 app.options('*', cors());
+
+// 정적 파일 제공
+app.use(express.static(path.join(__dirname, 'public')));
+
+// 테스트 페이지 라우트
+app.get('/test', (req, res) => {
+  res.sendFile(path.join(__dirname, 'public', 'test.html'));
+});
 
 (async () => {
   try {
